@@ -10,9 +10,4 @@
         android:name="com.example.tabs.ui.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
-    <fragment
-        android:id="@+id/registrationFragment"
-        android:name="com.example.tabs.ui.auth.RegisterFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
 </navigation>

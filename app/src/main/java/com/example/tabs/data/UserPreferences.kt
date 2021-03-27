@@ -2,33 +2,47 @@ package com.example.tabs.data
 
 import android.content.Context
 import androidx.datastore.DataStore
-import androidx.datastore.createDataStore
-import androidx.datastore.preferences.Preferences
-import androidx.datastore.preferences.createDataStore
-import androidx.datastore.preferences.edit
-import androidx.datastore.preferences.preferencesKey
+import androidx.datastore.preferences.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserPreferences(
-    context : Context
+    context: Context
 ) {
     private val applicationContext = context.applicationContext
     private val dataStore: DataStore<Preferences> = applicationContext.createDataStore(
-        name="tabs_datasource"
+        name = "tabs_datastore"
     )
 
     val authToken: Flow<String?>
-    get() = dataStore.data.map { preferences ->
-        preferences[KEY_AUTH]
-    }
+        get() = dataStore.data.map { preferences ->
+            preferences[KEY_AUTH]
+        }
+    val cluster: Flow<Int?>
+        get() = dataStore.data.map { preferences ->
+            preferences[CLUSTER_NUM]
+        }
 
-    suspend fun saveAuthToken(authToken: String){
+
+    suspend fun saveAuthToken(authToken: String) {
         dataStore.edit { preferences ->
-            preferences[KEY_AUTH]=authToken
+            preferences[KEY_AUTH] = authToken
         }
     }
-    companion object{
-        private val KEY_AUTH = preferencesKey<String>("key_auth")
+    suspend fun saveCluster(cluster: Int) {
+        dataStore.edit { preferences ->
+            preferences[CLUSTER_NUM] = cluster
+        }
     }
+    suspend fun clear() {
+        dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
+
+    companion object {
+        private val KEY_AUTH = preferencesKey<String>("key_auth")
+        private val CLUSTER_NUM= preferencesKey<Int>("cluster number")
+    }
+
 }

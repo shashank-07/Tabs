@@ -3,68 +3,74 @@ package com.example.tabs.ui.auth
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import com.example.tabs.databinding.FragmentLoginBinding
-import com.example.tabs.data.network.AuthApi
-import com.example.tabs.data.repository.AuthRepository
+import com.example.tabs.data.network.Api
+import com.example.tabs.data.repository.MainRepository
 import com.example.tabs.ui.base.BaseFragment
 import com.example.tabs.ui.enable
+import com.example.tabs.ui.handleApiError
 import com.example.tabs.ui.home.HomeActivity
+import com.example.tabs.ui.register.RegisterActivity
 import com.example.tabs.ui.startNewActivity
 import com.example.tabs.ui.visible
 import kotlinx.coroutines.launch
 
-class LoginFragment : BaseFragment<AuthViewModel,FragmentLoginBinding,AuthRepository>(){
+class LoginFragment : BaseFragment<AuthViewModel,FragmentLoginBinding,MainRepository>(){
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
-        binding.btnLogin.enable(false)
-        binding.progressbar.visible(false)
-
-        viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
+        override fun onActivityCreated(savedInstanceState: Bundle?) {
+            super.onActivityCreated(savedInstanceState)
+            var navController: NavController?=null
             binding.progressbar.visible(false)
+            binding.btnLogin.enable(false)
 
-            when (it) {
-                is Resource.Success -> {
+            viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
+                binding.progressbar.visible(it is Resource.Loading)
+                when (it) {
+                    is Resource.Success -> {
+                        lifecycleScope.launch {
+                            viewModel.saveAuthToken(it.value.response.password!!)
+                         requireActivity().startNewActivity(HomeActivity::class.java)
 
-                        viewModel.saveAuthToken(it.value.response.password)
-                        requireActivity().startNewActivity(HomeActivity::class.java)
-
-                    Toast.makeText(requireContext(), it.value.response.toString(), Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    is Resource.Failure -> handleApiError(it) { login() }
                 }
-                is Resource.Failure -> {
-                    Toast.makeText(requireContext(), "Login Failure", Toast.LENGTH_SHORT).show()
-                }
+            })
+
+            binding.etLoginPassword.addTextChangedListener {
+                val email = binding.etLoginUsername.text.toString().trim()
+                binding.btnLogin.enable(email.isNotEmpty() && it.toString().isNotEmpty())
             }
-        })
 
-        binding.etLoginPassword.addTextChangedListener{
-            val email=binding.etLoginUsername.text.toString().trim()
-            binding.btnLogin.enable(email.isNotEmpty()&& it.toString().isNotEmpty())
+
+            binding.btnLogin.setOnClickListener {
+                login()
+            }
+            binding.btnSignup.setOnClickListener{
+                requireActivity().startNewActivity(RegisterActivity::class.java)
+            }
         }
 
-        binding.btnLogin.setOnClickListener {
+        private fun login() {
             val email = binding.etLoginUsername.text.toString().trim()
             val password = binding.etLoginPassword.text.toString().trim()
-            binding.progressbar.visible(true)
-            viewModel.login(email,password)
+            viewModel.login(email, password)
         }
 
-    }
+        override fun getViewModel() = AuthViewModel::class.java
 
-    override fun getViewModel()=AuthViewModel::class.java
-
-    override fun getFragmentBinding(
+        override fun getFragmentBinding(
             inflater: LayoutInflater,
             container: ViewGroup?
-    )= FragmentLoginBinding.inflate(inflater,container,false)
+        ) = FragmentLoginBinding.inflate(inflater, container, false)
+
+        override fun getFragmentRepository() =
+            MainRepository(remoteDataSource.buildApi(Api::class.java), userPreferences)
 
 
-    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java),userPreferences)
-
-
-}
+    }

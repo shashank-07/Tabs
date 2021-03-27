@@ -5,26 +5,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tabs.data.repository.AuthRepository
+import com.example.tabs.data.repository.MainRepository
 import com.example.tabs.data.responses.LoginResponse
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    private val repository: AuthRepository
+    private val repository: MainRepository
 ):ViewModel() {
 
     private val _loginResponse :MutableLiveData<Resource<LoginResponse>> = MutableLiveData()
     val loginResponse : LiveData<Resource<LoginResponse>>
         get()=_loginResponse
     fun login(
-            email: String,
-            password: String
+        email: String,
+        password: String
     ) = viewModelScope.launch {
-        _loginResponse.value=repository.login(email,password)
+        _loginResponse.value = Resource.Loading
+        _loginResponse.value = repository.login(email, password)
     }
 
-    fun saveAuthToken(token:String)= viewModelScope.launch {
+    suspend fun saveAuthToken(token: String) {
         repository.saveAuthToken(token)
     }
 
 }
+

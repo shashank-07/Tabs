@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.viewbinding.ViewBinding
 import com.example.tabs.data.UserPreferences
 import com.example.tabs.data.network.RemoteDataSource
@@ -15,6 +16,7 @@ import java.util.prefs.Preferences
 
 abstract class BaseFragment<VM: ViewModel, B: ViewBinding, R: BaseRepository> : Fragment() {
 
+    protected  lateinit var nav : NavController
     protected lateinit var userPreferences: UserPreferences
     protected lateinit var binding: B
     protected  lateinit var viewModel: VM
@@ -28,7 +30,8 @@ abstract class BaseFragment<VM: ViewModel, B: ViewBinding, R: BaseRepository> : 
         userPreferences=UserPreferences(requireContext())
         binding = getFragmentBinding(inflater,container)
         val factory = ViewModelfactory(getFragmentRepository())
-        viewModel=ViewModelProvider(this,factory).get(getViewModel())
+        viewModel=ViewModelProvider(requireActivity(),factory).get(getViewModel())
+
         return binding.root
     }
 
@@ -37,4 +40,6 @@ abstract class BaseFragment<VM: ViewModel, B: ViewBinding, R: BaseRepository> : 
     abstract fun getFragmentBinding(inflater:LayoutInflater, container: ViewGroup?) : B
 
     abstract fun getFragmentRepository(): R
+
+
 }

@@ -2,10 +2,14 @@ package com.example.tabs.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.View
+import androidx.datastore.preferences.Preferences
 import androidx.fragment.app.Fragment
 import com.example.tabs.ui.auth.LoginFragment
 import com.example.tabs.ui.base.BaseFragment
+import com.example.tabs.ui.home.HomeFragment
+import com.example.tabs.ui.register.PreferenceFragment
 import com.google.android.material.snackbar.Snackbar
 
 fun <A : Activity> Activity.startNewActivity(activity: Class<A>) {
@@ -34,19 +38,28 @@ fun View.snackbar(message: String, action: (() -> Unit)? = null) {
     snackbar.show()
 }
 
+
+
 fun Fragment.handleApiError(
     failure: Resource.Failure,
     retry: (() -> Unit)? = null
 ) {
     when {
-        failure.isNetworkError -> requireView().snackbar(
-            "Please check your internet connection",
-            retry
-        )
+
+        failure.isNetworkError ->{
+            requireView().snackbar(
+                "Please check your internet connection",
+                retry
+            )
+            Log.d("Wassup",failure.errorBody.toString())
+
+
+        }
         failure.errorCode == 201 -> {
             if (this is LoginFragment) {
                 requireView().snackbar("You've entered incorrect email or password")
             }
+
 //            } else {
 //                (this as BaseFragment<*, *, *>).logout()
 //            }
