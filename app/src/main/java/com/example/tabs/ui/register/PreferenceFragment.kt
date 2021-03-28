@@ -78,7 +78,7 @@ class PreferenceFragment : BaseFragment<RegisterViewModel, FragmentPreferenceBin
 
         activity?.onBackPressedDispatcher?.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                viewModel.setPassword("");
+                viewModel.setPassword("")
                 nav = Navigation.findNavController(requireActivity(), R.id.fragment3)
                 nav.navigate(R.id.action_preferenceFragment_to_registerFragment)
             }

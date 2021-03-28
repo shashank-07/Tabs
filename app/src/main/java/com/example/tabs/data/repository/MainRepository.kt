@@ -22,6 +22,8 @@ class MainRepository(
     suspend fun saveCluster(cluster:Int){
         preferences.saveCluster(cluster)
     }
+
+
     suspend fun logout(){
         preferences.clear()
     }

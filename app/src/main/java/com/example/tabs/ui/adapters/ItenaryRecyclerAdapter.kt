@@ -70,15 +70,15 @@ class ItenaryRecyclerAdapter(
             var btnMap: Button = binding.findViewById(R.id.btn_maps)
             var time_spent:Float=0F
             if (itenary.type == "place") {
-                titleView.setText(itenary.response.name)
-                titleView.setTextSize(18f)
-                category.setText(itenary.response.category)
-                description.setText(itenary.response.description)
+                titleView.text = itenary.response.name
+                titleView.textSize = 18f
+                category.text = itenary.response.category
+                description.text = itenary.response.description
                try {
                    if (itenary.response.price.toInt() == 0) {
-                       cost.setText("Free")
+                       cost.text = "Free"
                    } else
-                       cost.setText("Rs. ${itenary.response.price}")
+                       cost.text = "Rs. ${itenary.response.price}"
                }catch (exception: Exception){
 
                }
@@ -90,7 +90,7 @@ class ItenaryRecyclerAdapter(
                 }catch (exception: Exception){
                     time_spent= 1.0F
                 }
-                time.setText("${time_spent} Hr")
+                time.text = "${time_spent} Hr"
 
                 Log.d("Cost and time", "" + itenary.response.price + itenary.response.time_spent)
                 category.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12F)
@@ -104,7 +104,7 @@ class ItenaryRecyclerAdapter(
 
                 }
             } else if (itenary.type == "drive") {
-                category.setText("Drive for ${Math.round(itenary.response.driving_time * 10.0) / 10.0} hours")
+                category.text = "Drive for ${Math.round(itenary.response.driving_time * 10.0) / 10.0} hours"
                 category.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
                 image.setImageResource(R.drawable.ic_car_foreground)
                 titleView.visibility = View.INVISIBLE

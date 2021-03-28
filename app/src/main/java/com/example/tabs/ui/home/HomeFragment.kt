@@ -109,14 +109,14 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
 
         viewModel.itenary.observe(viewLifecycleOwner,{
           val adapter=ItenaryRecyclerAdapter(viewModel, it, requireContext())
-              adapter.setHasStableIds(true);
+              adapter.setHasStableIds(true)
             binding.placesList.adapter=adapter
 
         })
 
         viewModel.userLoc.observe(viewLifecycleOwner, {
-            userLocation=it;
-           getCluster(userLocation)
+            userLocation=it
+            getCluster(userLocation)
 
         })
         viewModel.userCluster.observe(viewLifecycleOwner,{
@@ -139,7 +139,7 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
 
 
         binding.refresh.setOnClickListener {
-            viewModel.setRefresh(refresh+1);
+            viewModel.setRefresh(refresh+1)
         }
         binding.btBuild.setOnClickListener{
             if(user_cluster==-1){
@@ -174,6 +174,14 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
 
 
 
+        }
+
+        binding.btLogout.setOnClickListener {
+            lifecycleScope.launch {
+                getFragmentRepository().logout()
+                requireActivity().startNewActivity(AuthActivity::class.java)
+
+            }
         }
 
 
@@ -286,7 +294,7 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
         locationRequest.fastestInterval = 0
         locationRequest.numUpdates = 1
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        fusedLocationProviderClient!!.requestLocationUpdates(
+        fusedLocationProviderClient.requestLocationUpdates(
             locationRequest,locationCallback,Looper.myLooper()
         )
     }
