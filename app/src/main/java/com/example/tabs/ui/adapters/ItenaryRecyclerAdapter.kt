@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tabs.R
 import com.example.tabs.data.responses.Itenary
 import com.example.tabs.ui.home.HomeViewModel
+import java.lang.Exception
 import java.util.*
 
 class ItenaryRecyclerAdapter(
@@ -66,22 +67,33 @@ class ItenaryRecyclerAdapter(
             var cost: TextView = binding.findViewById(R.id.tv_place_cost)
             var time: TextView = binding.findViewById(R.id.tv_travel_time)
             var btnMap: Button = binding.findViewById(R.id.btn_maps)
-
+            var time_spent:Float=0F
             if (itenary.type == "place") {
                 titleView.setText(itenary.response.name)
                 titleView.setTextSize(18f)
                 category.setText(itenary.response.category)
                 description.setText(itenary.response.description)
-                if (itenary.response.price.toInt() == 0) {
-                    cost.setText("Free")
-                } else
-                    cost.setText("Rs. ${itenary.response.price}")
-                Log.d("Cost and time", "" + itenary.response.price + itenary.response.time_spent)
-                time.setText("${itenary.response.time_spent.toLong()} Hr")
-                category.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12F)
-                if (itenary.response.time_spent.toInt() == 0) {
-                    time.setText("1 Hr")
+               try {
+                   if (itenary.response.price.toInt() == 0) {
+                       cost.setText("Free")
+                   } else
+                       cost.setText("Rs. ${itenary.response.price}")
+               }catch (exception:Exception){
+
+               }
+
+                try{
+                 time_spent=itenary.response.time_spent.toFloat()
+
+
+                }catch(exception:Exception){
+                    time_spent= 1.0F
                 }
+                time.setText("${time_spent} Hr")
+
+                Log.d("Cost and time", "" + itenary.response.price + itenary.response.time_spent)
+                category.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12F)
+
                 image.setImageResource(R.drawable.ic_place)
                 btnMap.setOnClickListener({
                     val uri: String = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", itenary.response.latitude, itenary.response.longitude)
