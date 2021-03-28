@@ -10,12 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabs.R
 import com.example.tabs.data.responses.Itenary
 import com.example.tabs.ui.home.HomeViewModel
-import java.lang.Exception
 import java.util.*
+
 
 class ItenaryRecyclerAdapter(
     val viewModel: HomeViewModel,
@@ -78,7 +79,7 @@ class ItenaryRecyclerAdapter(
                        cost.setText("Free")
                    } else
                        cost.setText("Rs. ${itenary.response.price}")
-               }catch (exception:Exception){
+               }catch (exception: Exception){
 
                }
 
@@ -86,7 +87,7 @@ class ItenaryRecyclerAdapter(
                  time_spent=itenary.response.time_spent.toFloat()
 
 
-                }catch(exception:Exception){
+                }catch (exception: Exception){
                     time_spent= 1.0F
                 }
                 time.setText("${time_spent} Hr")
@@ -95,11 +96,13 @@ class ItenaryRecyclerAdapter(
                 category.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12F)
 
                 image.setImageResource(R.drawable.ic_place)
-                btnMap.setOnClickListener({
-                    val uri: String = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", itenary.response.latitude, itenary.response.longitude)
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                btnMap.setOnClickListener {
+                    val urlAddress =
+                        "http://maps.google.com/maps?q=" + itenary.response.latitude.toString() + "," + itenary.response.longitude.toString() + "(" + itenary.response.name + ")&iwloc=A&hl=es"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress))
                     context.startActivity(intent)
-                })
+
+                }
             } else if (itenary.type == "drive") {
                 category.setText("Drive for ${Math.round(itenary.response.driving_time * 10.0) / 10.0} hours")
                 category.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
