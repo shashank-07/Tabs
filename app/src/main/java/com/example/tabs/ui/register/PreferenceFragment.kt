@@ -102,7 +102,7 @@ class PreferenceFragment : BaseFragment<RegisterViewModel, FragmentPreferenceBin
             viewModel.add(Preference("Religious Sites",listOf("Historic Sites Religious Sites","Religious Sites","Religious Sites Churches & Cathedrals","Missions Religious Sites", "Architectural Buildings Religious Sites", "Tourist points & Landmarks Religious Sites","Churches & Cathedrals"),false))
             viewModel.add(Preference("Historic Sites",listOf("Speciality Museums", "Historic Sites", "Tourist points & Landmarks Architectural Buildings",),false))
             viewModel.add(Preference("Nature and Wildlife",listOf("Aquariums", "Nature & Wildlife Areas", "Parks Jogging Paths & Tracks","Bodies of Water","Zoos","Gardens","National Parks"),false))
-            viewModel.add(Preference("Beaches",listOf("Beaches"),false))
+            viewModel.add(Preference("\nBeaches",listOf("Beaches"),false))
             viewModel.add(Preference("Shopping Centers",listOf("Tourist points & Landmarks Flea & Street Markets", "Flea & Street Markets", "Antique Shops"),false))
             viewModel.add(Preference("Localities",listOf("Neighborhoods"),false))
             viewModel.add(Preference("Movie Theaters",listOf("Movie Theaters Shopping Malls"),false))
@@ -112,7 +112,7 @@ class PreferenceFragment : BaseFragment<RegisterViewModel, FragmentPreferenceBin
             viewModel.add(Preference("Architectural Buildings",listOf("Architectural Buildings", "Bridges"),false))
             viewModel.add(Preference("Random Fun & Adventure",listOf("tours","experiences","adventure","Science Museums", "Speciality & Gift Shops"),false))
             viewModel.add(Preference("Games & Entertainment",listOf("Miniature Golf","Escape Games", "Playgrounds Game & Entertainment Centers", "Bowling Alleys Game & Entertainment Centers"),false))
-            viewModel.add(Preference("Health & Spas",listOf("Yoga & Pilates", "Health Clubs Spas", "Health Clubs Hammams & Turkish Baths","Health Clubs"),false))
+            viewModel.add(Preference("\nHealth & Spas",listOf("Yoga & Pilates", "Health Clubs Spas", "Health Clubs Hammams & Turkish Baths","Health Clubs"),false))
             viewModel.add(Preference("Resorts",listOf("resorts", "Health Clubs Spas", "Health Clubs Hammams & Turkish Baths","Health Clubs"),false))
             viewModel.add(Preference("Luxury",listOf("luxury"),false))
         }
