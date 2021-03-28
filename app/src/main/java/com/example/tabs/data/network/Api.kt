@@ -45,7 +45,8 @@ interface Api {
         @Field("budget") budget :Int,
         @Field("time") time :Int,
         @Field("refresh") refresh :Int,
-        @Field("cluster") cluster :Int
+        @Field("cluster") cluster :Int,
+        @Field("places_pref") places_pref: String,
     ) : ItenaryResponse
 
 

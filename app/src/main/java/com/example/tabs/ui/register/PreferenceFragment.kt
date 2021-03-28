@@ -43,7 +43,8 @@ class PreferenceFragment : BaseFragment<RegisterViewModel, FragmentPreferenceBin
 
                 is Resource.Success -> {
                     lifecycleScope.launch {
-                        viewModel.saveAuthToken(it.value.response.password)
+
+                        viewModel.saveAuthToken(it.value.response.places_preference.joinToString(separator = ","))
                         requireActivity().startNewActivity(HomeActivity::class.java)
 
                     }

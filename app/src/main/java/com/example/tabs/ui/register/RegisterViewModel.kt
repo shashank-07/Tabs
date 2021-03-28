@@ -101,7 +101,10 @@ class RegisterViewModel(
                 }
             }
         }
+
         Log.d("Signup",allCats.toString())
+        Log.d("Signup",allCats.joinToString(separator=","))
+
         _placesPref.value=allCats
 
     }

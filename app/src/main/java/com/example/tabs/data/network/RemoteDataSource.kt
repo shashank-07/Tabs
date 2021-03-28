@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit
 
 
 class RemoteDataSource {
-    companion object {
-        private const val BASE_URL ="https://tabs-backend-api.herokuapp.com/"
+    companion object{
+        private const val BASE_URL="http://172.20.1.219:3000/"
     }
 
     fun <Api> buildApi(

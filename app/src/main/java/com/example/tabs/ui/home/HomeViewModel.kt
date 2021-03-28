@@ -30,6 +30,9 @@ class HomeViewModel(
     val userLoc : LiveData<Location>
         get()=_userLoc
 
+    private val _userPref :MutableLiveData<String> = MutableLiveData()
+    val userPref : LiveData<String>
+        get()=_userPref
 
     private val _userCluster :MutableLiveData<Int> = MutableLiveData()
     val userCluster : LiveData<Int>
@@ -84,16 +87,19 @@ class HomeViewModel(
         budget: Int,
         time: Int,
         refresh:Int,
-        cluster:Int
+        cluster:Int,
+        places_pref:String
     ) = viewModelScope.launch {
         _itenaryResponse.value = Resource.Loading
         //val response = repository.getItenary(budget,time,refresh,cluster);
-        _itenaryResponse.value = repository.getItenary(budget,time,refresh,cluster)
+        _itenaryResponse.value = repository.getItenary(budget,time,refresh,cluster,places_pref)
         Log.d("MOFOS",_itenaryResponse.value.toString())
 
     }
 
-
+    fun setUserPref(prefs:String){
+        _userPref.value=prefs
+    }
 
     fun setLoc(
         lat:Double,

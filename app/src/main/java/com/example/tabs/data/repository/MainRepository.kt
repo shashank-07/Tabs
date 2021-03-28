@@ -44,9 +44,10 @@ class MainRepository(
         budget: Int,
         time: Int,
         refresh:Int,
-        cluster:Int
+        cluster:Int,
+        places_pref:String
     ) = safeApiCall {
-        api.getItenary(budget, time, refresh, cluster)
+        api.getItenary(budget, time, refresh, cluster,places_pref)
     }
 
 

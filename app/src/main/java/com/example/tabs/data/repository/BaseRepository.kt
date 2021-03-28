@@ -24,6 +24,7 @@ abstract class BaseRepository {
                         Resource.Failure(false, throwable.code(), throwable.response()?.errorBody())
                     }
                     else -> {
+                        Log.d("Wasssup from repo",throwable.localizedMessage)
                         Resource.Failure(true, null, null)
                     }
                 }

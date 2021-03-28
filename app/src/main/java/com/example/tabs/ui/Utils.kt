@@ -51,7 +51,7 @@ fun Fragment.handleApiError(
                 "Please check your internet connection",
                 retry
             )
-            Log.d("Wassup",failure.errorBody.toString())
+            Log.d("Wassup",failure.toString())
 
 
         }

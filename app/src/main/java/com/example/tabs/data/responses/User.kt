@@ -8,5 +8,6 @@ data class User(
     val food_preference: List<Any>,
     val name: String,
     val password: String,
-    val places_preference: List<String>
+    val places_preference: List<String>,
+    val places_pref_string: String,
 )

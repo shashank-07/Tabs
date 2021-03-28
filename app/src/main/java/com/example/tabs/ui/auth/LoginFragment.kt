@@ -33,7 +33,8 @@ class LoginFragment : BaseFragment<AuthViewModel,FragmentLoginBinding,MainReposi
                 when (it) {
                     is Resource.Success -> {
                         lifecycleScope.launch {
-                            viewModel.saveAuthToken(it.value.response.password!!)
+
+                            viewModel.saveAuthToken(it.value.response.places_pref_string)
                          requireActivity().startNewActivity(HomeActivity::class.java)
 
                         }

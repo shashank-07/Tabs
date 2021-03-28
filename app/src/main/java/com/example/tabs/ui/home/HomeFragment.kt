@@ -53,6 +53,7 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
     var time:Int = -1
     var refresh:Int = 0
     var api_being_called:Boolean=false
+    var places_pref:String=""
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -60,6 +61,7 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
         closeCustom()
         intialize()
         checkLocal()
+        checkLocalPref()
 
         viewModel.clusterResponse.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             binding.progressbar.visible(it is Resource.Loading)
@@ -131,6 +133,9 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
             binding.btBuild.performClick()
         })
 
+        viewModel.userPref.observe(viewLifecycleOwner,{
+            places_pref=it
+        })
 
 
         binding.refresh.setOnClickListener {
@@ -212,8 +217,18 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
 
         })
 
+    }
+    fun checkLocalPref(){
+        userPreferences.authToken.asLiveData().observe(requireActivity(), androidx.lifecycle.Observer {
+            Log.d("local","got cluster"+it.toString())
+            if(it!=null){
+                viewModel.setUserPref(it)
+            }
+
+        })
 
     }
+
 
     private fun buildItenary(){
 
@@ -230,7 +245,7 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
             if(!api_being_called){
                 api_being_called=true
 
-                viewModel.getItenary(budget,time,refresh,user_cluster)
+                viewModel.getItenary(budget,time,refresh,user_cluster,places_pref)
 
             }
 
@@ -308,6 +323,7 @@ class HomeFragment  : BaseFragment<HomeViewModel, FragmentHomeBinding, MainRepos
             arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION),
             PERMISSION_ID
         )
+
     }
 
     fun isLocationEnabled():Boolean{
