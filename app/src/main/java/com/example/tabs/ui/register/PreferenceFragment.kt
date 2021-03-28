@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tabs.R
 import com.example.tabs.data.network.Api
@@ -71,12 +72,8 @@ class PreferenceFragment : BaseFragment<RegisterViewModel, FragmentPreferenceBin
         intialize()
 
         viewModel.places.observe(viewLifecycleOwner, Observer{
-
             binding.placesList.adapter=PreferenceRecyclerAdapter(viewModel, it, requireContext())
-
             viewModel.setPlacesPref(it)
-
-
         })
 
         activity?.onBackPressedDispatcher?.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
@@ -88,79 +85,45 @@ class PreferenceFragment : BaseFragment<RegisterViewModel, FragmentPreferenceBin
         })
 
         binding.btnSignup.setOnClickListener {
-
-
             signup()
-
         }
-
     }
 
 
 
     private fun intialize(){
-        binding.placesList.layoutManager=LinearLayoutManager(requireContext())
+        binding.placesList.layoutManager=GridLayoutManager(requireContext(),2)
         addCategories()
-
     }
 
     private fun addCategories(){
         if(viewModel.isPreferencesEmpty()){
-
             //Manually Add all groups here
             viewModel.add(Preference("Religious Sites",listOf("Historic Sites Religious Sites","Religious Sites","Religious Sites Churches & Cathedrals","Missions Religious Sites", "Architectural Buildings Religious Sites", "Tourist points & Landmarks Religious Sites","Churches & Cathedrals"),false))
-
             viewModel.add(Preference("Historic Sites",listOf("Speciality Museums", "Historic Sites", "Tourist points & Landmarks Architectural Buildings",),false))
-
             viewModel.add(Preference("Nature and Wildlife",listOf("Aquariums", "Nature & Wildlife Areas", "Parks Jogging Paths & Tracks","Bodies of Water","Zoos","Gardens","National Parks"),false))
-
             viewModel.add(Preference("Beaches",listOf("Beaches"),false))
-
             viewModel.add(Preference("Shopping Centers",listOf("Tourist points & Landmarks Flea & Street Markets", "Flea & Street Markets", "Antique Shops"),false))
-
-            viewModel.add(Preference("Neighborhoods",listOf("Neighborhoods"),false))
-
+            viewModel.add(Preference("Localities",listOf("Neighborhoods"),false))
             viewModel.add(Preference("Movie Theaters",listOf("Movie Theaters Shopping Malls"),false))
-
             viewModel.add(Preference("Tourist Spots",listOf("Tourist points & Landmarks Parks","Tourist Spots", "Tourist points & Landmarks Lighthouses", "Libraries","Tourist points & Landmarks","Tourist points & Landmarks Monuments & Statues"),false))
-
             viewModel.add(Preference("Sports & Fitness",listOf("Golf Courses","Arenas & Stadiums","Sports Complexes", "Parks Jogging Paths & Tracks", "Sports Camps & Clinics Sports Complexes"),false))
-
             viewModel.add(Preference("Art and Culture",listOf("Art Galleries","Art Museums", "Libraries", "Paint & Pottery Studios","Paint & Pottery Studios Lessons & Workshops","Theaters Theatre & Performances"),false))
-
             viewModel.add(Preference("Architectural Buildings",listOf("Architectural Buildings", "Bridges"),false))
-
-            viewModel.add(Preference("Random Fun adventures",listOf("tours","experiences","adventure","Science Museums", "Speciality & Gift Shops"),false))
-
-            viewModel.add(Preference("Games & Entertainment Centers",listOf("Miniature Golf","Escape Games", "Playgrounds Game & Entertainment Centers", "Bowling Alleys Game & Entertainment Centers"),false))
-
+            viewModel.add(Preference("Random Fun & Adventure",listOf("tours","experiences","adventure","Science Museums", "Speciality & Gift Shops"),false))
+            viewModel.add(Preference("Games & Entertainment",listOf("Miniature Golf","Escape Games", "Playgrounds Game & Entertainment Centers", "Bowling Alleys Game & Entertainment Centers"),false))
             viewModel.add(Preference("Health & Spas",listOf("Yoga & Pilates", "Health Clubs Spas", "Health Clubs Hammams & Turkish Baths","Health Clubs"),false))
-
             viewModel.add(Preference("Resorts",listOf("resorts", "Health Clubs Spas", "Health Clubs Hammams & Turkish Baths","Health Clubs"),false))
-
             viewModel.add(Preference("Luxury",listOf("luxury"),false))
-
-
-
-
         }
-
-
-
     }
 
     private fun signup() {
-
         if(email.isNotEmpty()&&name.isNotEmpty()&&password.isNotEmpty()){
             viewModel.signup(name,email, password,placesPref)
-
         }else{
             view?.snackbar("Please fill all fields")
         }
-
-
-
-
     }
 
     override fun getViewModel() = RegisterViewModel ::class.java
@@ -172,7 +135,6 @@ class PreferenceFragment : BaseFragment<RegisterViewModel, FragmentPreferenceBin
 
     override fun getFragmentRepository() =
             MainRepository(remoteDataSource.buildApi(Api::class.java), userPreferences)
-
 
 }
 

@@ -43,10 +43,6 @@ class RegisterViewModel(
     val places : LiveData<List<Preference>>
         get()=_places
 
-
-
-
-
     var newlist = arrayListOf<Preference>()
 
     fun add(preference: Preference){
@@ -97,7 +93,6 @@ class RegisterViewModel(
             for(pref in prefs){
                 if(pref.selected){
                     allCats=allCats+pref.categories
-
                 }
             }
         }
