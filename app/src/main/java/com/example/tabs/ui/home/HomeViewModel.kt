@@ -114,6 +114,8 @@ class HomeViewModel(
     suspend fun saveCluster(cluster: Int) {
         repository.saveCluster(cluster)
     }
-
+    suspend fun logout(){
+        repository.logout()
+    }
 }
 
